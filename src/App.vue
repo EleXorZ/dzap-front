@@ -41,6 +41,7 @@
           placeholder="Prénom"
           class="email-input"
           required
+          :disabled="loading"
           aria-label="Ton prénom"
         />
         <input
@@ -49,6 +50,7 @@
           placeholder="Email"
           class="email-input"
           required
+          :disabled="loading"
           aria-label="Adresse email pour la newsletter"
         />
         <button
@@ -56,9 +58,19 @@
           class="subscribe-button"
           :disabled="loading"
         >
-          Rejoindre
+          {{ loading ? 'Inscription en cours...' : 'Rejoindre' }}
         </button>
       </form>
+
+      <!-- Message de succès -->
+      <div v-if="successMessage" class="success-message">
+        ✅ {{ successMessage }}
+      </div>
+
+      <!-- Message d'erreur -->
+      <div v-if="errorMessage" class="error-message">
+        ❌ {{ errorMessage }}
+      </div>
 
       <!-- Disclaimer -->
       <p class="disclaimer">Vous pourrez vous désinscrire à tout moment.</p>
@@ -67,19 +79,41 @@
 </template>
 
 <script>
+import { newsletterService } from './services/api'
+
 export default {
   name: 'App',
   data() {
     return {
       firstName: '',
       email: '',
-      loading: false
+      loading: false,
+      successMessage: '',
+      errorMessage: ''
     }
   },
   methods: {
-    handleSubmit() {
-      // À implémenter plus tard
-      console.log('Prénom:', this.firstName, 'Email:', this.email)
+    async handleSubmit() {
+      this.loading = true
+      this.successMessage = ''
+      this.errorMessage = ''
+
+      const result = await newsletterService.subscribe(this.email, this.firstName)
+
+      if (result.success) {
+        this.successMessage = 'Inscription réussie ! Merci de nous avoir rejoint 🎉'
+        this.firstName = ''
+        this.email = ''
+
+        // Masquer le message après 5 secondes
+        setTimeout(() => {
+          this.successMessage = ''
+        }, 5000)
+      } else {
+        this.errorMessage = result.error
+      }
+
+      this.loading = false
     }
   }
 }
@@ -247,6 +281,42 @@ html, body {
   font-size: 0.75rem;
   color: #999999;
   max-width: 800px;
+}
+
+/* Messages */
+.success-message {
+  font-size: 0.9rem;
+  color: #4ade80;
+  background-color: rgba(74, 222, 128, 0.1);
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+  border-left: 3px solid #4ade80;
+  max-width: 400px;
+  text-align: left;
+  animation: slideIn 0.3s ease-out;
+}
+
+.error-message {
+  font-size: 0.9rem;
+  color: #f87171;
+  background-color: rgba(248, 113, 113, 0.1);
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+  border-left: 3px solid #f87171;
+  max-width: 400px;
+  text-align: left;
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Responsive */
