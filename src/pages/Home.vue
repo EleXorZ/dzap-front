@@ -148,7 +148,7 @@ export default {
 }
 
 .logo {
-  height: 50px;
+  height: 100px;
   width: auto;
   object-fit: contain;
 }
@@ -160,16 +160,16 @@ export default {
   align-items: center;
   justify-content: center;
   min-height: calc(100vh - 60px);
-  padding: 0.75rem;
+  padding: 0.5rem;
   text-align: center;
-  gap: 0.6rem;
+  gap: 0.4rem;
 }
 
 /* Avatar */
 .avatar-container {
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.1rem;
   flex-shrink: 0;
-  padding: 12px;
+  padding: 6px;
 }
 
 .avatar {
@@ -187,7 +187,7 @@ export default {
   font-size: clamp(1.3rem, 3.5vw, 2.2rem);
   font-weight: 700;
   line-height: 1.1;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.1rem;
   max-width: 900px;
 }
 
@@ -196,13 +196,13 @@ export default {
   line-height: 1.4;
   color: #d1d1d1;
   max-width: 800px;
-  margin-bottom: 0.6rem;
+  margin-bottom: 0.4rem;
   font-weight: 400;
 }
 
 .newsletter-text {
   font-size: clamp(0.8rem, 1.5vw, 0.9rem);
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.3rem;
   color: #ffffff;
 }
 

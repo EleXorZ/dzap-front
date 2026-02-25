@@ -35,4 +35,70 @@ export const newsletterService = {
   }
 }
 
+export const quizService = {
+  async getQuestions() {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/quiz/questions`, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+        },
+        credentials: 'omit'
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Erreur lors du chargement des questions')
+      }
+
+      return {
+        success: true,
+        data
+      }
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message || 'Erreur réseau. Veuillez réessayer.'
+      }
+    }
+  },
+
+  async submitQuiz(answerIds, email, firstName, lastName, subscribeNewsletter) {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/quiz/submit`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        credentials: 'omit',
+        body: JSON.stringify({
+          answerIds,
+          email,
+          firstName,
+          lastName,
+          subscribeNewsletter
+        })
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Erreur lors de la soumission du quiz')
+      }
+
+      return {
+        success: true,
+        data
+      }
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message || 'Erreur réseau. Veuillez réessayer.'
+      }
+    }
+  }
+}
+
 
